@@ -1,6 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
 #include <cstddef>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 template <typename ItemType>
 class list {
 private:
@@ -28,7 +33,7 @@ public:
 		list_size = 0;
 	}
 
-	void split(Node* n) {
+	Node* split(Node* n) {
 		Node* n2 = new Node();
 		for(int i = capacity / 2, j = 0; i < capacity; i++, j++)
 			n2->items[j] = n->items[i];
@@ -38,8 +43,8 @@ public:
 		Node* n = find(index);
 		if(n == NULL) {
 			n = new Node();
-			head->next = n;
-			tail->next = n;
+			head = n;
+			tail = n;
 			n->items[n->size] = item;
 			n->size++;
 		}
@@ -47,8 +52,10 @@ public:
 			n->items[n->size] = item;
 			n->size++;
 		}
-		else {
-			split(n);
+		else if(n->size == capacity) {
+			if(n == tail)
+				tail = split(n);
+			n->next = split(n);
 			n = find(index);
 			n->items[n->size] = item;
 			n->size++;
