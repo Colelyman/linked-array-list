@@ -38,6 +38,8 @@ public:
 		Node* n = find(index);
 		if(n == NULL) {
 			n = new Node();
+			head->next = n;
+			tail->next = n;
 			n->items[n->size] = item;
 			n->size++;
 		}
@@ -73,7 +75,15 @@ public:
 	}
 
 	void print() {
-
+		Node* n = head->next;
+		int count = 0;
+		while(n != tail) {
+			cout << "node " << count << ": ";
+			for(int i = 0; i < n->size; i++) 
+				cout << n->items[i] << " ";
+			cout << endl;
+			n->next;
+		}
 	}
 };
 #endif
