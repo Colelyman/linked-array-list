@@ -1,5 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
+#include <cstddef>
 template <typename ItemType>
 class list {
 private:
@@ -42,10 +43,10 @@ public:
 		return n;
 	}
 
-	Node* find(const ItemType& item) {
-		Node* n;
+	int find(const ItemType& item) {
+		int index;
 
-		return n;
+		return index;
 	}
 
 	void print() {
