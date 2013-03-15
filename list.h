@@ -70,15 +70,28 @@ public:
 	}
 
 	Node* find(int index) {
-		Node* n;
+		Node* n = head;
+		if(index <= list_size / 2)
+			for(int i = 0; i != index; i++)
+				n = n->next;
+		else {
+			n = tail;
+			for(int i = list_size; i !=index; i--)
+				n = n->prev;
+		}
 
 		return n;
 	}
 
 	int find(const ItemType& item) {
-		int index;
+		Node* n = head;
+		for(int i = 0; i < list_size; i++) {
+			if(item == n)
+				return i;
+			n->next;
+		}
 
-		return index;
+		return -1;
 	}
 
 	void print() {
