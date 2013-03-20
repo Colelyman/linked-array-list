@@ -15,16 +15,21 @@ private:
 		ItemType* items;
 		int size;
 
-		Node() {
+		Node(int capacity) {
+			items = new ItemType[capacity];
 			prev = NULL;
 			next = NULL;
 			size = 0;
 		}
-		Node(const ItemType& item) {
+		Node(int capacity, const ItemType& item) {
+			items = new ItemType[capacity];
 			items[0] = item;
 			prev = NULL;
 			next = NULL;
 			size = 1;
+		}
+		~Node() {
+			delete[] items;
 		}
 	};
 	int capacity;
@@ -33,16 +38,27 @@ private:
 	int list_size;
 public:
 	list(int capacity) {
+		cout << "Enter constructor" << endl;
 		this->capacity = capacity;
-		tail = NULL;
-		head = NULL;
+		tail = new Node(capacity);
+		head = new Node(capacity);
+		head->next = new Node(capacity);
+		tail->prev = new Node(capacity);
+		head->next->next = tail->prev;
+		tail->prev->prev = head->next;
 		list_size = 0;
+		cout << "Exit constructor" << endl;
 	}
 
 	~list() {
-		for(Node* n = head; n != tail; n = n->next) 
+		cout << "Enter destructor" << endl;
+		for(Node* n = head; n != tail->prev; n = n->next) {
+			if(n == NULL)
+				break;
 			delete n;
+		}
 		delete tail;
+		cout << "Exit destructor" << endl;
 	}
 
 	Node* split(Node* n) {
@@ -53,28 +69,16 @@ public:
 	}
 
 	void insert(int index, const ItemType& item) {
+		cout << "Enter insert() " << endl;
 		Node* n = find(index);
 		if(index > list_size)
 			return;
-		if(n == NULL) {
-			n = new Node(item);
-			head = n;
-			tail = n;
-			n->size++;
-		}
-		else if(n->size < capacity) {
-			n->items[n->size] = item;
-			n->size++;
-		}
-		else if(n->size == capacity) {
-			if(n == tail)
-				tail = split(n);
-			n->next = split(n);
-			n = find(index);
+		if(n->size < capacity) {
 			n->items[n->size] = item;
 			n->size++;
 		}
 		list_size++;
+		cout << "Exit insert()" << endl;
 	}
 
 	Node* remove(int index) {
@@ -84,22 +88,24 @@ public:
 	}
 
 	Node* find(int index) {
+		cout << "Enter find()" << endl;
 		Node* n = head;
-		if(index <= list_size / 2)
-			for(int i = 0; i != index; i++)
+		if(index <= list_size / 2) {
+			for(int i = 0; i <= index; i++)
 				n = n->next;
+		}
 		else {
 			n = tail;
-			for(int i = list_size; i !=index; i--)
+			for(int i = list_size; i >= index; i--)
 				n = n->prev;
 		}
-
+		cout << "Exit find()" << endl;
 		return n;
 	}
 
 	int find(const ItemType& item) {
 		Node* n = head;
-		for(int i = 0; i < list_size; i++) {
+		for(int i = 0; i <= list_size; i++) {
 			if(item == n)
 				return i;
 			n->next;
@@ -111,7 +117,14 @@ public:
 	void print() {
 		Node* n = head->next;
 		int count = 0;
-		while(n != tail) {
+		if(list_size < capacity) {
+			cout << "node " << count << ": ";
+			for(int i = 0; i < n->size; i++)
+				cout << n->items[i] << " ";
+			cout << endl;
+			return;
+		}
+		while(n != tail->prev) {
 			cout << "node " << count << ": ";
 			for(int i = 0; i < n->size; i++) 
 				cout << n->items[i] << " ";
