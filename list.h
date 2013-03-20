@@ -38,38 +38,40 @@ private:
 	int list_size;
 public:
 	list(int capacity) {
-		cout << "Enter constructor" << endl;
+//		cout << "Enter constructor" << endl;
 		this->capacity = capacity;
 		tail = new Node(capacity);
 		head = new Node(capacity);
-		head->next = new Node(capacity);
-		tail->prev = new Node(capacity);
-		head->next->next = tail->prev;
-		tail->prev->prev = head->next;
+		Node* first = new Node(capacity);
+		first->prev = head;
+		first->next = tail;
+		head->next = first;
+		tail->prev = first;
 		list_size = 0;
-		cout << "Exit constructor" << endl;
+	//	cout << "Exit constructor" << endl;
+		this->capacity = capacity;
 	}
 
 	~list() {
-		cout << "Enter destructor" << endl;
+		//cout << "Enter destructor" << endl;
 		for(Node* n = head; n != tail->prev; n = n->next) {
 			if(n == NULL)
 				break;
 			delete n;
 		}
 		delete tail;
-		cout << "Exit destructor" << endl;
+		//cout << "Exit destructor" << endl;
 	}
 
 	Node* split(Node* n) {
-		Node* n2 = new Node();
+		Node* n2 = new Node(capacity);
 		for(int i = capacity / 2, j = 0; i < capacity; i++, j++)
 			n2->items[j] = n->items[i];
 		return n2;
 	}
 
 	void insert(int index, const ItemType& item) {
-		cout << "Enter insert() " << endl;
+		//cout << "Enter insert() " << endl;
 		Node* n = find(index);
 		if(index > list_size)
 			return;
@@ -78,7 +80,7 @@ public:
 			n->size++;
 		}
 		list_size++;
-		cout << "Exit insert()" << endl;
+		//cout << "Exit insert()" << endl;
 	}
 
 	Node* remove(int index) {
@@ -88,18 +90,18 @@ public:
 	}
 
 	Node* find(int index) {
-		cout << "Enter find()" << endl;
+		//cout << "Enter find()" << endl;
 		Node* n = head;
 		if(index <= list_size / 2) {
-			for(int i = 0; i <= index; i++)
+			for(int i = 0; i <= index; i += capacity)
 				n = n->next;
 		}
 		else {
 			n = tail;
-			for(int i = list_size; i >= index; i--)
+			for(int i = list_size; i >= index; i -= capacity)
 				n = n->prev;
 		}
-		cout << "Exit find()" << endl;
+		//cout << "Exit find()" << endl;
 		return n;
 	}
 
@@ -115,21 +117,13 @@ public:
 	}
 
 	void print() {
-		Node* n = head->next;
 		int count = 0;
-		if(list_size < capacity) {
-			cout << "node " << count << ": ";
-			for(int i = 0; i < n->size; i++)
-				cout << n->items[i] << " ";
-			cout << endl;
-			return;
-		}
-		while(n != tail->prev) {
+		for(Node* n = head->next; n != tail || n == NULL; n = n->next) {
 			cout << "node " << count << ": ";
 			for(int i = 0; i < n->size; i++) 
 				cout << n->items[i] << " ";
 			cout << endl;
-			n = n->next;
+			count++;
 		}
 	}
 };
