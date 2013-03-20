@@ -20,6 +20,12 @@ private:
 			next = NULL;
 			size = 0;
 		}
+		Node(const ItemType& item) {
+			items[0] = item;
+			prev = NULL;
+			next = NULL;
+			size = 1;
+		}
 	};
 	int capacity;
 	Node* head;
@@ -33,19 +39,27 @@ public:
 		list_size = 0;
 	}
 
+	~list() {
+		for(Node* n = head; n != tail; n = n->next) 
+			delete n;
+		delete tail;
+	}
+
 	Node* split(Node* n) {
 		Node* n2 = new Node();
 		for(int i = capacity / 2, j = 0; i < capacity; i++, j++)
 			n2->items[j] = n->items[i];
+		return n2;
 	}
 
 	void insert(int index, const ItemType& item) {
 		Node* n = find(index);
+		if(index > list_size)
+			return;
 		if(n == NULL) {
-			n = new Node();
+			n = new Node(item);
 			head = n;
 			tail = n;
-			n->items[n->size] = item;
 			n->size++;
 		}
 		else if(n->size < capacity) {
@@ -102,7 +116,7 @@ public:
 			for(int i = 0; i < n->size; i++) 
 				cout << n->items[i] << " ";
 			cout << endl;
-			n->next;
+			n = n->next;
 		}
 	}
 };
