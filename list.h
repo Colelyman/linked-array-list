@@ -74,6 +74,8 @@ public:
 		n2->next = n->next;
 		n->next = n2;
 		n2->prev = n;
+		if(tail->prev == n)
+			tail->prev = n2;
 	}
 
 	void insert(int index, const ItemType& item) {
@@ -81,11 +83,12 @@ public:
 		if(index > list_size)
 			return;
 		cout << list_size << " < " << capacity << endl;
-		if(list_size < capacity) {
+		if(index < capacity) {
 			head->next->items[index] = item;
-			if(index >= head->next->size)
+			if(index >= head->next->size) {
 				head->next->size++;
-			list_size++;
+				list_size++;
+			}
 			return;
 		}
 		else {
@@ -99,9 +102,10 @@ public:
 				n = npair.first;
 				arrayIndex = npair.second;
 				n->items[arrayIndex] = item;
-				if(index >= n->size)
+				if(index >= n->size) {
 					n->size++;
-				list_size++;
+					list_size++;
+				}
 			}
 		}
 
@@ -118,13 +122,14 @@ public:
 		cout << "Enter find()" << endl;
 		pair<Node*, int> npair;
 		int count;
+		cout << "list_size: " << list_size << endl;
 		if(index <= list_size / 2) {
 			count = 0;
 			for(Node* n = head->next; n != tail; n =n->next) {
 				count += n->size;
 				if(count >= index) {
 					npair.first = n->prev;
-					cout << "index: " << index << endl;
+					cout << "index: " << index << "count: " << count << endl;
 					if(index < capacity) 
 						npair.second = index;
 					else
@@ -133,6 +138,10 @@ public:
 			}
 		}
 		else {
+			if(index == list_size) {
+				npair.first = tail->prev;
+				npair.second = tail->prev->size;
+			}
 			count = list_size;
 			for(Node* n = tail->prev; n != head; n =n->prev) {
 				count -= n->size;
