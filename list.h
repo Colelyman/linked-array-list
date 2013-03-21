@@ -133,9 +133,10 @@ public:
 			count = 0;
 			for(Node* n = head->next; n != tail || n == NULL; n = n->next) {
 				for(int i = 0; i < n->size && count < index; i++, count++) 
-					npair.second = count;
+					count++;
 				npair.first = n;
 			}
+			npair.second = calculateIndex(index, count, npair.first->size);
 				/*count += n->size;
 				if(count >= index) {
 					npair.first = n;
@@ -149,9 +150,10 @@ public:
 			count = list_size;
 			for(Node* n = tail->prev; n != head || n == NULL; n = n->prev) {
 				for(int i = 0; i < n->size && count > index; i++, count--)
-					npair.second = count;
+					count++;
 				npair.first = n;
 			}
+			npair.second = calculateIndex(index, count, npair.first->size);
 				/*count -= n->size;
 				if(count <= index) {
 					npair.first = n;
