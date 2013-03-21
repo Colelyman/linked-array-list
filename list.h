@@ -83,7 +83,8 @@ public:
 		cout << list_size << " < " << capacity << endl;
 		if(list_size < capacity) {
 			head->next->items[index] = item;
-			head->next->size++;
+			if(index >= head->next->size)
+				head->next->size++;
 			list_size++;
 			return;
 		}
@@ -98,7 +99,8 @@ public:
 				n = npair.first;
 				arrayIndex = npair.second;
 				n->items[arrayIndex] = item;
-				n->size++;
+				if(index >= n->size)
+					n->size++;
 				list_size++;
 			}
 		}
