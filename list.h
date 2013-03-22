@@ -79,6 +79,11 @@ public:
 	}
 
 	void move(Node* n, int arrayIndex) {
+		for(int i = n->size + 1; i > arrayIndex; i--)
+			n->items[i] = n->items[i-1];
+	}
+
+	void splitMove(Node* n, int arrayIndex) {
 		for(int i = n->size; i > arrayIndex; i--)
 			n->items[i] = n->items[i-1];
 	}
@@ -91,19 +96,19 @@ public:
 		int arrayIndex = npair.second;
 //		cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 		if(n->size < capacity) {
-			move(n, arrayIndex);
+			if(arrayIndex < n->size)
+				move(n, arrayIndex);
 			n->items[arrayIndex] = item;
-			if(arrayIndex >= n->size) {
-				n->size++;
-				list_size++;
-			}
+			n->size++;
+			list_size++;
 		}
 		else if(n->size == capacity) {
 			split(n);
 			npair = find(index);
 			n = npair.first;
 			arrayIndex = npair.second;
-			move(n, arrayIndex);
+			if(arrayIndex < n->size)
+				move(n, arrayIndex);
 //			cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 			n->items[arrayIndex] = item;
 			n->size++;
@@ -137,6 +142,7 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->prev->size);
+			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
 //			cout << "if count: " << count << endl;
 		}
 		else {
@@ -146,7 +152,7 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->next->size);
-//			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
+			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
 		}
 //		cout << "Exit find()" << endl;
 		cout << "FINAL, arrayIndex: " << npair.second << endl; 
