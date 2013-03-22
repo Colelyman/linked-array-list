@@ -89,8 +89,9 @@ public:
 		pair<Node*, int> npair = find(index);
 		Node* n = npair.first;
 		int arrayIndex = npair.second;
-		cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
+//		cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 		if(n->size < capacity) {
+			move(n, arrayIndex);
 			n->items[arrayIndex] = item;
 			if(arrayIndex >= n->size) {
 				n->size++;
@@ -102,9 +103,8 @@ public:
 			npair = find(index);
 			n = npair.first;
 			arrayIndex = npair.second;
-			if(arrayIndex <= n->size)
-				move(n, arrayIndex);
-			cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
+			move(n, arrayIndex);
+//			cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 			n->items[arrayIndex] = item;
 			n->size++;
 			list_size++;
@@ -137,7 +137,7 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->prev->size);
-			cout << "if count: " << count << endl;
+//			cout << "if count: " << count << endl;
 		}
 		else {
 			count = list_size;
@@ -146,10 +146,10 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->next->size);
-			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
+//			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
 		}
 //		cout << "Exit find()" << endl;
-//		cout << "FINAL, arrayIndex: " << npair.second << endl; 
+		cout << "FINAL, arrayIndex: " << npair.second << endl; 
 		return npair;
 	}
 
@@ -173,7 +173,7 @@ public:
 			cout << endl;
 			count++;
 		}
-		cout << "list_size: " << list_size << endl;
+		cout << endl;
 	}
 };
 #endif
