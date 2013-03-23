@@ -81,7 +81,7 @@ public:
 	}
 
 	void move(Node* n, int arrayIndex) {
-		for(int i = n->size - 1; i > arrayIndex; i--)
+		for(int i = n->size; i > arrayIndex; i--)
 			n->items[i] = n->items[i-1];
 	}
 
