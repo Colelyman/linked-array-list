@@ -72,7 +72,7 @@ public:
 			tail->prev = n2;
 	}
 
-	void move(Node* n, int arrayIndex) {
+	void rmove(Node* n, int arrayIndex) {
 		for(int i = n->size; i > arrayIndex; i--)
 			n->items[i] = n->items[i-1];
 	}
@@ -89,7 +89,7 @@ public:
 		}
 		if(n->size < capacity) {
 			if(arrayIndex < n->size)
-				move(n, arrayIndex);
+				rmove(n, arrayIndex);
 			n->items[arrayIndex] = item;
 			n->size++;
 			list_size++;
@@ -100,17 +100,37 @@ public:
 			n = npair.first;
 			arrayIndex = npair.second;
 			if(arrayIndex < n->size)
-				move(n, arrayIndex);
+				rmove(n, arrayIndex);
 			n->items[arrayIndex] = item;
 			n->size++;
 			list_size++;
 		}
 	}
 
-	Node* remove(int index) {
-		Node* n = find(index);
+	void lmove(Node* n, int arrayIndex) {
+		for(int i = arrayIndex; i < n->size; i++)
+			n->items[i] = n->items[i + 1];
+	}
 
-		return n;
+	ItemType remove(int index) {
+		if(index > list_size)
+			return ItemType();
+		pair<Node*, int> npair = find(index);
+		Node* n = npair.first;
+		int arrayIndex = npair.second;
+		ItemType item = n->items[arrayIndex];
+		if(n->size > 1) {
+			lmove(n, arrayIndex);
+			n->size--;
+		}
+		else {
+			n->next->prev = n->prev;
+			n->prev->next = n->next; 
+			delete n;
+		}
+		list_size--;
+
+		return item;
 	}
 
 	pair<Node*, int> find(int index) {
