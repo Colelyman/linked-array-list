@@ -159,11 +159,12 @@ public:
 	}
 
 	int find(const ItemType& item) {
-		Node* n = head;
-		for(int i = 0; i <= list_size; i++) {
-			if(item == n)
-				return i;
-			n->next;
+		int count = 0;
+		for(Node* n = head->next; n != tail; n = n->next) {
+			for(int i = 0; i < n->size; i++, count++) {
+				if(n->items[i] == item)
+					return count;
+			}
 		}
 
 		return -1;
