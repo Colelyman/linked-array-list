@@ -53,7 +53,9 @@ public:
 	}
 
 	~list() {
-
+		for(Node* n = head; n != tail; n = n->next)
+			delete n;
+		delete tail;
 	}
 
 	void split(Node* n) {
@@ -81,6 +83,10 @@ public:
 		pair<Node*, int> npair = find(index);
 		Node* n = npair.first;
 		int arrayIndex = npair.second;
+		if(arrayIndex == n->size && n != tail->prev) {
+			n = n->next;
+			arrayIndex = 0;
+		}
 		if(n->size < capacity) {
 			if(arrayIndex < n->size)
 				move(n, arrayIndex);
@@ -107,16 +113,6 @@ public:
 		return n;
 	}
 
-	int calculateIndex(int index, int count, int size, Node* n) {
-		if(n == head->next) {
-			cout << "First node" << endl;
-			return index;
-		}
-		else if(count % 2 != 0)
-			return (index - (count - size) + 1); 
-		return (index - (count - size));
-	}
-
 	pair<Node*, int> find(int index) {
 		pair<Node*, int> npair;
 		int count;
@@ -126,16 +122,19 @@ public:
 				count += n->size;
 				npair.first = n;
 			}
-			npair.second = calculateIndex(index, count, npair.first->prev->size, npair.first);
+			count -= npair.first->size;
+			npair.second = index - count;
 		}
 		else {
 			count = list_size;
+			npair.first = tail->prev;
 			for(Node* n = tail->prev; n != head && count >= index; n = n->prev) {
 				count -= n->size;
 				npair.first = n;
 			}
-			npair.second = calculateIndex(index, count, npair.first->next->size, npair.first);
+			npair.second = index - count;
 		}
+	//	cout << "index: " << index << " count: " << count << " arrayIndex: " << npair.second << endl;
 		return npair;
 	}
 
