@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <iostream>
 #include <utility>
+#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -119,16 +120,15 @@ public:
 		return n;
 	}
 
-	int calculateIndex(int index, int count, int size) {
-		if(index == 0)
-			return 0;
-		else if(index < capacity)
+	int calculateIndex(int index, int count, int size, Node* n) {
+		if(n == head->next)
 			return index;
+		else if(count % 2 != 0)
+			return (index - (count - size) + 1); 
 		return (index - (count - size));
 	}
 
 	pair<Node*, int> find(int index) {
-//		cout << "Enter find()" << endl;
 		pair<Node*, int> npair;
 		int count;
 //		cout << "index: " << index << " list_size: " << list_size << endl;
@@ -138,9 +138,8 @@ public:
 				count += n->size;
 				npair.first = n;
 			}
-			npair.second = calculateIndex(index, count, npair.first->prev->size);
-			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
-//			cout << "if count: " << count << endl;
+			npair.second = calculateIndex(index, count, npair.first->prev->size, npair.first);
+			cout << "count: " << count << " index: " << index << " size: " << npair.first->prev->size << endl;
 		}
 		else {
 			count = list_size;
@@ -148,10 +147,9 @@ public:
 				count -= n->size;
 				npair.first = n;
 			}
-			npair.second = calculateIndex(index, count, npair.first->next->size);
+			npair.second = calculateIndex(index, count, npair.first->next->size, npair.first);
 			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
 		}
-//		cout << "Exit find()" << endl;
 		cout << "FINAL, arrayIndex: " << npair.second << endl; 
 		return npair;
 	}
