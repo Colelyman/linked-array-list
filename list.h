@@ -41,7 +41,6 @@ private:
 	int list_size;
 public:
 	list(int capacity) {
-//		cout << "Enter constructor" << endl;
 		this->capacity = capacity;
 		tail = new Node(capacity);
 		head = new Node(capacity);
@@ -51,19 +50,10 @@ public:
 		head->next = first;
 		tail->prev = first;
 		list_size = 0;
-	//	cout << "Exit constructor" << endl;
-		this->capacity = capacity;
 	}
 
 	~list() {
-		//cout << "Enter destructor" << endl;
-		for(Node* n = head; n != tail->prev; n = n->next) {
-			if(n == NULL)
-				break;
-			delete n;
-		}
-		delete tail;
-		//cout << "Exit destructor" << endl;
+
 	}
 
 	void split(Node* n) {
@@ -72,13 +62,12 @@ public:
 			n2->items[j] = n->items[i];
 		n2->size = capacity / 2;
 		n->size = capacity / 2;
+		n->next->prev = n2; 
 		n2->next = n->next;
 		n->next = n2;
 		n2->prev = n;
 		if(tail->prev == n)
 			tail->prev = n2;
-//		if(head->next == n)
-//			head->next = n2;
 	}
 
 	void move(Node* n, int arrayIndex) {
@@ -92,7 +81,6 @@ public:
 		pair<Node*, int> npair = find(index);
 		Node* n = npair.first;
 		int arrayIndex = npair.second;
-//		cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 		if(n->size < capacity) {
 			if(arrayIndex < n->size)
 				move(n, arrayIndex);
@@ -107,7 +95,6 @@ public:
 			arrayIndex = npair.second;
 			if(arrayIndex < n->size)
 				move(n, arrayIndex);
-//			cout << "arrayIndex " << arrayIndex << " n->size " << n->size << endl; 
 			n->items[arrayIndex] = item;
 			n->size++;
 			list_size++;
@@ -121,8 +108,10 @@ public:
 	}
 
 	int calculateIndex(int index, int count, int size, Node* n) {
-		if(n == head->next)
+		if(n == head->next) {
+			cout << "First node" << endl;
 			return index;
+		}
 		else if(count % 2 != 0)
 			return (index - (count - size) + 1); 
 		return (index - (count - size));
@@ -131,7 +120,6 @@ public:
 	pair<Node*, int> find(int index) {
 		pair<Node*, int> npair;
 		int count;
-//		cout << "index: " << index << " list_size: " << list_size << endl;
 		if(index <= list_size / 2) {
 			count = 0;
 			for(Node* n = head->next; n != tail && count <= index; n = n->next) {
@@ -139,7 +127,6 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->prev->size, npair.first);
-			cout << "count: " << count << " index: " << index << " size: " << npair.first->prev->size << endl;
 		}
 		else {
 			count = list_size;
@@ -148,9 +135,7 @@ public:
 				npair.first = n;
 			}
 			npair.second = calculateIndex(index, count, npair.first->next->size, npair.first);
-			cout << "count: " << count << " index: " << index << " size: " << npair.first->next->size << endl;
 		}
-		cout << "FINAL, arrayIndex: " << npair.second << endl; 
 		return npair;
 	}
 
@@ -174,7 +159,6 @@ public:
 			cout << endl;
 			count++;
 		}
-		cout << endl;
 	}
 };
 #endif
