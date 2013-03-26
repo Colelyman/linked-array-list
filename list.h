@@ -3,11 +3,14 @@
 #include <cstddef>
 #include <iostream>
 #include <utility>
-#include <cmath>
+#include <sstream>
+#include <string>
 
 using std::cout;
+using std::string;
 using std::endl;
 using std::pair;
+using std::stringstream;
 
 template <typename ItemType>
 class list {
@@ -154,7 +157,6 @@ public:
 			}
 			npair.second = index - count;
 		}
-	//	cout << "index: " << index << " count: " << count << " arrayIndex: " << npair.second << endl;
 		return npair;
 	}
 
@@ -170,15 +172,17 @@ public:
 		return -1;
 	}
 
-	void print() {
+	string print() {
+		stringstream s;
 		int count = 0;
 		for(Node* n = head->next; n != tail || n == NULL; n = n->next) {
-			cout << "node " << count << ": ";
+			s << "node " << count << ": ";
 			for(int i = 0; i < n->size; i++) 
-				cout << n->items[i] << " ";
-			cout << endl;
+				s << n->items[i] << " ";
+			s << endl;
 			count++;
 		}
+		return s.str();
 	}
 };
 #endif
