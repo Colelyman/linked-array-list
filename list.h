@@ -57,10 +57,11 @@ public:
 
 	~list() {
 		Node* temp;
-		for(Node* n = head; n != tail; n = temp->next) {
-			temp = n;
+		for(Node* n = head->next; n != tail; n = temp) {
+			temp = n->next;
 			delete n;
 		}
+		delete head;
 		delete tail;
 	}
 
