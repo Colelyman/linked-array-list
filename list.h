@@ -56,8 +56,11 @@ public:
 	}
 
 	~list() {
-		for(Node* n = head; n != tail; n = n->next)
+		Node* temp;
+		for(Node* n = head; n != tail; n = temp->next) {
+			temp = n;
 			delete n;
+		}
 		delete tail;
 	}
 
@@ -110,20 +113,20 @@ public:
 		}
 	}
 
-	void lmove(Node* n, int arrayIndex) {
-		for(int i = arrayIndex; i < n->size; i++)
+	void lmove(Node* n, int arrayIndex, int index) {
+		for(int i = arrayIndex; i < n->size - 1; i++)
 			n->items[i] = n->items[i + 1];
 	}
 
 	ItemType remove(int index) {
-		if(index > list_size)
+		if(index > list_size || list_size == 0)
 			return ItemType();
 		pair<Node*, int> npair = find(index);
 		Node* n = npair.first;
 		int arrayIndex = npair.second;
 		ItemType item = n->items[arrayIndex];
 		if(n->size > 1) {
-			lmove(n, arrayIndex);
+			lmove(n, arrayIndex, index);
 			n->size--;
 		}
 		else {
@@ -175,6 +178,8 @@ public:
 	string print() {
 		stringstream s;
 		int count = 0;
+		if(list_size == 0)
+			return "";
 		for(Node* n = head->next; n != tail || n == NULL; n = n->next) {
 			s << "node " << count << ": ";
 			for(int i = 0; i < n->size; i++) 
