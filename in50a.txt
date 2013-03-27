@@ -1,0 +1,16 @@
+list 4
+print
+insert 0 first
+insert 1 second
+insert 2 third
+insert 3 fourth
+insert 4 fifth
+print
+insert 2 sixth
+print
+find third
+find one
+remove 0
+remove 3
+print
+find fourth

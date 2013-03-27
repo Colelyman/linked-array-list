@@ -75,8 +75,10 @@ public:
 		n2->next = n->next;
 		n->next = n2;
 		n2->prev = n;
-		if(tail->prev == n)
+		if(tail->prev == n) {
 			tail->prev = n2;
+			n2->next = tail;
+		}
 	}
 
 	void rmove(Node* n, int arrayIndex) {
@@ -131,6 +133,11 @@ public:
 			n->size--;
 		}
 		else {
+			if(head->next->next == tail) {
+				n->size--;
+				list_size--;
+				return n->items[arrayIndex];
+			}
 			n->next->prev = n->prev;
 			n->prev->next = n->next; 
 			delete n;
@@ -160,6 +167,12 @@ public:
 				npair.first = n;
 			}
 			npair.second = index - count;
+			if(npair.first->next != tail) {
+				if(npair.second == npair.first->size) {
+					npair.first = npair.first->next;
+					npair.second = 0;
+				}
+			}
 		}
 		return npair;
 	}

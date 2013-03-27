@@ -1,0 +1,22 @@
+list 4
+print
+insert 0 first
+insert 1 second
+insert 2 third
+insert 3 fourth
+insert 4 fifth
+print
+node 0: first second 
+node 1: third fourth fifth 
+insert 2 sixth
+print
+node 0: first second 
+node 1: sixth third fourth fifth 
+find third 3
+find one -1
+remove 0 first
+remove 3 fourth
+print
+node 0: second 
+node 1: sixth third fifth 
+find fourth -1

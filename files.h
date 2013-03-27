@@ -70,7 +70,7 @@ public:
 		out << "remove " << index << " " <<plist->remove(index) << endl;
 	}
 	void print() {
-		out << plist->print();
+		out << "print" << endl << plist->print();
 	}
 };
 #endif
